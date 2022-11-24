@@ -3,34 +3,34 @@
   font-size: 1.5em;
 }
 
-textarea {
-  font-size: 1.1em;
-  width: 70%;
-  display: block;
-  margin: auto;
+:root {
+  --main-color: #44637f;
 }
 
-table {
-  border: 1px solid #1c6ea4;
-  background-color: #eeeeee;
-  width: 40%;
-  margin: 1.5em auto;
-  text-align: left;
-  border-collapse: collapse;
-  text-align: right;
+body {
+  background-color: var(--main-color);
 }
 
-thead {
-  font-weight: bold;
-  text-align: center;
-  border: 2px solid #999;
+.main {
+  margin: 0 auto;
+  width: 700px;
+  height: 100vh;
+  background-color: var(--main-color);
+  padding: 10px 20px;
 }
 
-th,
-td {
-  border: 1px solid #aaa;
+.tab-item {
+  background-color: var(--main-color);
+  color: white;
+  border: 2px solid white;
 }
-
-.error {
-  color: #922;
+.react-tabs__tab-list {
+  border-bottom: 2px solid #e2e2e2 !important;
+}
+.react-tabs__tab {
+  border-bottom: 2px solid #e2e2e2 !important;
+  bottom: -2px !important;
+}
+.react-tabs__tab--selected {
+  border-bottom: 2px solid var(--main-color) !important;
 }
