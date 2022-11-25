@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { KeywordsPanel } from "./KeywordsPanel";
 import { TablePanel } from "./TablePanel";
 
 interface Props {}
@@ -26,21 +27,21 @@ export const QueryOptions: React.FunctionComponent<Props> = () => {
 	};
 
 	return (
-		<Tabs>
+		<Tabs style={{ height: "100%" }}>
 			<TabList>
 				<Tab tabIndex="table" style={styles}>
 					Table
 				</Tab>
 
-				<Tab tabIndex="filter" style={styles}>
-					Filter
+				<Tab tabIndex="keywords" style={styles}>
+					Keywords
 				</Tab>
 			</TabList>
 			<TabPanel style={tabPanelStyle}>
 				<TablePanel />
 			</TabPanel>
 			<TabPanel style={tabPanelStyle}>
-				<div className="filter-panel"></div>
+				<KeywordsPanel />
 			</TabPanel>
 		</Tabs>
 	);

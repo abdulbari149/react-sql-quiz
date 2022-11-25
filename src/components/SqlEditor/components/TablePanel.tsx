@@ -24,7 +24,7 @@ export const TablePanel = () => {
 						key={tag.id}
 						value={tag.name}
 						onClick={(e, value) =>
-							dispatch({ type: Action.ADD_CLAUSE, payload: value })
+							dispatch({ type: Action.ADD_CLAUSE, payload: { value } })
 						}
 						size="md"
 					/>

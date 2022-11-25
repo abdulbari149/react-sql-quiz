@@ -1,6 +1,7 @@
 .editor_main {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: 5fr .6fr 4fr;
   width: 100%;
   height: 90vh;
   flex: 1;
@@ -8,8 +9,6 @@
 
 .sql-box {
   border: 1px solid #aaa;
-  width: 100%;
-  height: 60%;
   padding: 0px 15px;
   color: #ecebeb;
   overflow-y: scroll;
@@ -70,6 +69,7 @@
 }
 
 
+
 .answers>*:last-child:after {
   content: '';
   position: absolute;
@@ -101,10 +101,12 @@
   }
 }
 
-.table-panel {
+.table-panel,
+.keywords-panel {
   display: flex;
   flex-direction: row;
   padding: 15px 0px;
+  height: 100%;
 }
 
 .table-panel>.sql-tags {
@@ -115,3 +117,73 @@
 }
 
 .table-panel>.tabel {}
+
+.sql-table {
+  margin-left: 150px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ecebeb;
+  border-radius: 10px;
+  height: max-content;
+}
+
+.sql-table__header {
+  --side-width: 50px;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: var(--side-width) minmax(150px, 1fr) var(--side-width);
+  grid-template-rows: 40px;
+  border-bottom: 1px solid #ecebeb;
+}
+
+.sql-table__header>p {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  color: white;
+  font-size: 18px;
+  font-family: 'Poppins';
+  cursor: pointer;
+}
+
+.sql-table__header>*:first-child {
+  border-right: 1px solid #ecebeb;
+}
+
+.sql-table__header>*:last-child {
+  border-left: 1px solid #ecebeb;
+}
+
+.sql-table__column {
+  padding: 6px 0px;
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-family: "Poppins";
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.sql-table__column:last-child {
+  margin-bottom: 5px;
+}
+
+.keywords {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.keywords>button:not(:last-child) {
+  margin-right: 10px !important;
+}

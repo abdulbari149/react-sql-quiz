@@ -9,7 +9,7 @@ export const SqlBox = () => {
 			<p className="question"># {data[state.questionIndex].question}</p>
 			<div className="answers">
 				{state.answer.map((answ) => {
-					return <p className="answer">{answ.content}</p>;
+					return <p className={`answer`}>{answ.content}</p>;
 				})}
 			</div>
 		</div>
