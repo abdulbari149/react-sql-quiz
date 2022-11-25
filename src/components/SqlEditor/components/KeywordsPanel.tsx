@@ -1,5 +1,5 @@
 import { Button } from "../../shared/Button";
-import { Action } from "../core/actions";
+import { Action } from "../core/constants";
 import { useSqlQuiz } from "../core/EditorContext";
 
 interface Props {}

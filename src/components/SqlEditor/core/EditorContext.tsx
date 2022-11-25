@@ -6,12 +6,13 @@ const initialState: IState & {
 	dispatch: React.Dispatch<IAction> | (() => void);
 } = {
 	questionIndex: 0,
-	answer: [
-		{ id: 1, content: "SELECT" },
-		{ id: 2, content: "FROM users" },
-		{ id: 3, content: "WHERE id=3;" },
-	],
+	answer: [],
 	score: 0,
+	table: {
+		alias: "",
+		columns: [],
+		name: "",
+	},
 	dispatch: () => {},
 };
 

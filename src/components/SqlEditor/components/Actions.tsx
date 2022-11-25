@@ -4,7 +4,7 @@ import { FiDelete } from "react-icons/fi";
 import { IoMdPlay } from "react-icons/io";
 import React from "react";
 import { useSqlQuiz } from "../core/EditorContext";
-import { Action } from "../core/actions";
+import { Action } from "../core/constants";
 
 export const Actions = () => {
 	const { dispatch } = useSqlQuiz();

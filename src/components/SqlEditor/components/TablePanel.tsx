@@ -2,7 +2,7 @@ import "../sqleditor.css";
 import { Button } from "../../shared/Button";
 import { SqlTable } from "./SqlTable";
 import { useSqlQuiz } from "../core/EditorContext";
-import { Action } from "../core/actions";
+import { Action } from "../core/constants";
 
 const tags = [
 	{ id: 1, name: "SELECT" },

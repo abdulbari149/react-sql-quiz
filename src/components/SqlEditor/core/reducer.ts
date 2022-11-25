@@ -1,49 +1,31 @@
 import React from "react";
-import { Action } from "./actions";
-import { IAction, IAnswer, IState } from "./interface";
+import { ActionController } from "./actions";
+import { Action } from "./constants";
+import { IAction, IState } from "./interface";
 
-const addToAnswer = (answer: IAnswer[], value: string) => {
-	const updatedAnswer = [
-		...answer,
-		{
-			id: answer.length + 1,
-			content: value,
-		},
-	];
-	return updatedAnswer;
-};
+// ADD Statement
+// DELETE STATEMENT
+// CLEAR
+
+const actionsController = new ActionController();
 
 export const sqlReducer: React.Reducer<IState, IAction> = (state, action) => {
 	switch (action.type) {
 		case Action.ADD_CLAUSE:
-			const answer = addToAnswer(state.answer, action.payload.value);
-			return { ...state, answer };
+			return actionsController.addClause(state, action.payload);
 		case Action.DELETE_CLAUSE:
-			const answers = [...state.answer];
-			return {
-				...state,
-				answer: answers.slice(0, state.answer.length - 1),
-			};
+			return actionsController.deleteClause(state);
 		case Action.CLEAR_SQL:
-			return {
-				...state,
-				answer: [],
-			};
+			return actionsController.clearClause(state);
 		case Action.ADD_FILTER:
-			if (action.payload.newLine) {
-				const answer = addToAnswer(state.answer, action.payload.value);
-				return { ...state, answer };
-			}
-			const lastAnswer = { ...state.answer[state.answer.length - 1] };
-			lastAnswer.content += " " + action.payload.value;
-			const updatedAnswer = [
-				...state.answer.slice(0, state.answer.length - 1),
-				lastAnswer,
-			];
-			return {
-				...state,
-				answer: updatedAnswer,
-			};
+			return actionsController.addFilter(state, action.payload);
+		case Action.ADD_TABLE:
+			return actionsController.addTable(state, action.payload);
+		case Action.SET_TABLE:
+			return actionsController.setTable(state, action.payload);
+		case Action.ADD_COLUMN:
+			console.log(action.payload);
+			return actionsController.addColumn(state, action.payload);
 		default:
 			return state;
 	}
