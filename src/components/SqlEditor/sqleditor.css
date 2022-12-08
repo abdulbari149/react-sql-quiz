@@ -2,16 +2,19 @@
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: 5fr .6fr 4fr;
-  width: 100%;
+  width: 700px;
+  margin: 0 auto;
   height: 90vh;
   flex: 1;
+  margin-top: 120px;
 }
 
 .sql-box {
   border: 1px solid #aaa;
   padding: 0px 15px;
   color: #ecebeb;
-  overflow-y: scroll;
+  display: grid;
+  position: relative;
 }
 
 .actions {
@@ -32,6 +35,7 @@
   font-weight: bold;
   position: relative;
   top: -2px;
+  cursor: pointer ;
 }
 
 .actions .execute {
@@ -54,7 +58,7 @@
 
 .question {
   font-weight: bold;
-
+  
   font-size: 15px;
   font-family: 'Poppins';
 }
@@ -66,14 +70,23 @@
   /* display: flex; */
   /* flex-direction: column; */
   padding: 0;
+  position: absolute;
+  top: 20px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  cursor: text;
+  width: 100%;
+  padding: 0 15px;
+  color: white;
 }
 
 
 
-.answers>*:last-child:after {
-  content: '';
+.pointer {
   position: absolute;
-  right: -5px;
+  top: 20px;
+  bottom: 0;
   opacity: 1;
   bottom: 4px;
   height: 18px;
@@ -102,7 +115,8 @@
 }
 
 .table-panel,
-.keywords-panel {
+.keywords-panel,
+.filter-panel {
   display: flex;
   flex-direction: row;
   padding: 15px 0px;
@@ -186,4 +200,13 @@
 
 .keywords>button:not(:last-child) {
   margin-right: 10px !important;
+}
+
+.operators {
+  display: grid;
+  grid-auto-rows: minmax(60px, 1fr);
+  grid-auto-columns: minmax(80px, 1fr);
+  grid-template-columns: repeat(5, max-content);
+  grid-column-gap: .5em;
+  margin: 0 auto;
 }

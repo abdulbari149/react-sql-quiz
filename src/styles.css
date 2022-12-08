@@ -8,12 +8,16 @@
 }
 
 body {
-  background-color: var(--main-color);
+  background-color: var(--main-color) !important;
 }
+
+body iframe {
+  display: none !important;
+} 
 
 .main {
   margin: 0 auto;
-  width: 700px;
+  /* width: 700px; */
   height: 100vh;
   background-color: var(--main-color);
   padding: 10px 20px;

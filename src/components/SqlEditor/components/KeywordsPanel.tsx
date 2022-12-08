@@ -16,13 +16,14 @@ const keywords = [
 ];
 
 export const KeywordsPanel: React.FunctionComponent<Props> = () => {
-	const { dispatch } = useSqlQuiz();
+	const { dispatch, pauseGame } = useSqlQuiz();
 
 	const handleFilterClick = (
 		e: React.MouseEvent<HTMLButtonElement>,
 		value: string,
 		newLine: boolean
 	) => {
+		if(pauseGame)
 		dispatch({ type: Action.ADD_FILTER, payload: { value, newLine } });
 	};
 

@@ -1,5 +1,16 @@
 [
   {
-    "question": "Write a SQL Query to get all Users"
+    "question": "Write a SQL Query to get all Customer",
+    "tableName": "Customer",
+    "answerQuery": "SELECT * FROM Customer;",
+    "bindParams": null
+  },
+  {
+    "question": "Write a SQL Query to get Artist with an id 20",
+    "tableName": "Artist",
+    "answerQuery": "SELECT * FROM Artist WHERE ArtistId = :id ;",
+    "bindParams": {
+      ":id": 20
+    }
   }
 ]

@@ -3,33 +3,42 @@ import { useEffect, useRef, useState } from "react";
 export const useCountdown = (
 	initialValue: number,
 	onComplete: () => void,
-) => {
+	reset: boolean
+): [number, () => void] => {
 	const [counter, setCounter] = useState(initialValue);
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-  const intervalRef = useRef<number>();
+	const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+	const intervalRef = useRef<number>();
 	intervalRef.current = counter;
 
-  const interrupt = () => {
-    if(timer) {
-      clearInterval(timer);
-    }
-  };
+	const interrupt = () => {
+		console.log({ timer });
+		if (timer) {
+			clearInterval(timer);
+		}
+	};
 
-	useEffect(() => {
+	const registerTimer = () => {
 		const _timer = setInterval(() => {
-			if(intervalRef.current === null || intervalRef.current === undefined) {
+			if (intervalRef.current === null || intervalRef.current === undefined) {
 				clearInterval(_timer);
-				return
+				return;
 			}
 			if (intervalRef.current == 0) {
 				clearInterval(_timer);
-        onComplete()
+				onComplete();
 			} else {
 				setCounter(intervalRef.current - 1);
 			}
 		}, 1000);
-		return () => clearInterval(_timer);
-	}, []);
+		console.log(_timer);
+		setTimer(_timer)
+	};
+
+	useEffect(() => {
+		if(!reset) return;
+		registerTimer();
+		return interrupt()
+	}, [reset]);
 
 	return [counter, interrupt];
 };

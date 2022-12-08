@@ -1,148 +1,152 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
-import initSqlJs, { Database, QueryExecResult } from "sql.js";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import Breif from "./components/Breif";
 import Result from "./components/Result";
 import SqlEditor from "./components/SqlEditor";
 import "react-tabs/style/react-tabs.css";
+import { useSqlQuiz } from "./components/SqlEditor/core/EditorContext";
+import { Action } from "./components/SqlEditor/core/constants";
+import "bootstrap/dist/css/bootstrap.css";
+import { Timer } from "./components/SqlEditor/components/Timer";
+import { Score } from "./components/SqlEditor/components/Score";
+import Modal from "./components/shared/Modal";
+import NextQuestionBtn from "./components/SqlEditor/components/NextQuestionBtn";
+import Goal from "./components/SqlEditor/components/Goal";
+window.process = process || {};
+
+const tabs = [
+	{
+		id: 1,
+		name: "Mission",
+		tabComponent: <Breif />,
+	},
+	{
+		id: 2,
+		name: "SQL",
+		tabComponent: <SqlEditor />,
+	},
+	{
+		id: 3,
+		name: "Result",
+		tabComponent: <Result />,
+	},
+];
+
+const tabStyles = {
+	color: "white",
+	border: "2px solid #e2e2e2",
+	padding: "10px 35px",
+	margin: "0 5px",
+	background: "#44637f",
+	borderRadius: "5px 5px 0 0",
+};
 
 export default function App() {
-	const [db, setDb] = useState<initSqlJs.Database | null>(null);
-	const [error, setError] = useState<any | null>(null);
-	const [tabIndex, setTabIndex] = useState(0);
-	const fetchSqlJs = async () => {
-		try {
-			const SQL = await initSqlJs({
-				locateFile: (url) => {
-					return `/${url}`;
-				},
-			});
-			setDb(new SQL.Database());
-		} catch (err) {
-			setError(err);
-		}
+	const { dispatch, tabIndex, open, score, gameEnded, gameStarted } =
+		useSqlQuiz();
+	const [modalText, setModalText] = useState<string>("");
+
+	const handleTabIndex = (index: number) => {
+		dispatch({ type: Action.CHANGE_TAB_INDEX, payload: { index } });
 	};
+
+	const winText =
+		"Congratulations. Your Answer is Correct. You have gained 20 points";
+	const gameEndText = "Game Has been Ended, Your Score is " + score;
 
 	useEffect(() => {
-		fetchSqlJs();
-	}, []);
-
-	const tabStyles = {
-		color: "white",
-		border: "2px solid #e2e2e2",
-		padding: "10px 35px",
-		margin: "0 5px",
-		background: "#44637f",
-		borderRadius: "5px 5px 0 0",
-	};
-
-	if (error) return <pre>{error.toString()}</pre>;
-	else if (!db) return <pre>Loading...</pre>;
-	else
-		return (
-			<div className="main">
-				<Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
-					<TabList>
-						<Tab tabIndex="breif" style={tabStyles}>
-							Breif
-						</Tab>
-						<Tab tabIndex="sql" style={tabStyles}>
-							SQL
-						</Tab>
-						<Tab tabIndex="result" style={tabStyles}>
-							Result
-						</Tab>
-					</TabList>
-					<TabPanel>
-						<Breif />
-					</TabPanel>
-					<TabPanel>
-						<SqlEditor />
-					</TabPanel>
-					<TabPanel>
-						<Result />
-					</TabPanel>
-				</Tabs>
-			</div>
-		);
-}
-
-interface Props {
-	db: Database;
-}
-
-const SQLRepl: React.FunctionComponent<Props> = ({ db }) => {
-	const [error, setError] = useState<any>(null);
-	const [results, setResults] = useState<QueryExecResult[]>([]);
-
-	function exec(sql: string) {
-		try {
-			// The sql is executed synchronously on the UI thread.
-			// You may want to use a web worker here instead
-			setResults(db.exec(sql)); // an array of objects is returned
-			setError(null);
-		} catch (err) {
-			// exec throws an error when the SQL statement is invalid
-			setError(err);
-			setResults([]);
-		}
-	}
+		setModalText(gameEnded ? gameEndText : winText);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [gameEnded]);
 
 	return (
-		<div className="App">
-			<h1>React SQL interpreter</h1>
+		<div className="main">
+			<div
+				style={{ display: tabIndex === 1 && gameStarted ? "block" : "none" }}
+			>
+				<Timer
+					onComplete={() => {
+						setModalText("oops. You ran out of time. Try Next Question");
+						dispatch({ type: Action.HANDLE_SUCCESS_MODAL, payload: true });
+					}}
+				/>
+				<Goal />
 
-			<textarea
-				onChange={(e) => exec(e.target.value)}
-				placeholder="Enter some SQL. No inspiration ? Try “select sqlite_version()”"
-			></textarea>
+				<Score />
+			</div>
 
-			<pre className="error">{(error || "").toString()}</pre>
-
-			<pre>
-				{
-					// results contains one object per select statement in the query
-					results.map(({ columns, values }, i) => (
-						<ResultsTable key={i} columns={columns} values={values} />
-					))
-				}
-			</pre>
+			<Tabs selectedIndex={tabIndex} onSelect={handleTabIndex}>
+				<TabList style={{ width: "700px", margin: "0 auto" }}>
+					{tabs.map((t) => {
+						return (
+							<Tab tabIndex={t.name.toLowerCase()} key={t.id} style={tabStyles}>
+								{t.name}
+							</Tab>
+						);
+					})}
+				</TabList>
+				{tabs.map((t) => {
+					return (
+						<TabPanel style={{ marginTop: "20px" }}>{t.tabComponent}</TabPanel>
+					);
+				})}
+			</Tabs>
+			<Modal
+				open={open}
+				text={modalText}
+				handleClose={() => {
+					dispatch({ type: Action.HANDLE_SUCCESS_MODAL, payload: false });
+					setModalText("");
+				}}
+			>
+				{!gameEnded ? (
+					<NextQuestionBtn dispatch={dispatch} />
+				) : (
+					<button
+						className="btn btn-primary"
+						style={{ display: "grid", margin: "0 auto", cursor: "pointer" }}
+						onClick={() => dispatch({ type: Action.PLAY_AGAIN, payload: {} })}
+					>
+						Play Again
+					</button>
+				)}
+			</Modal>
 		</div>
 	);
-};
-
-interface ResultsTableProps {
-	columns: any[];
-	values: any[][];
 }
 
-const ResultsTable: React.FunctionComponent<ResultsTableProps> = ({
-	columns,
-	values,
-}) => {
-	return (
-		<table>
-			<thead>
-				<tr>
-					{columns.map((columnName, i) => (
-						<td key={i}>{columnName}</td>
-					))}
-				</tr>
-			</thead>
+// interface ResultsTableProps {
+// 	columns: any[];
+// 	values: any[][];
+// }
 
-			<tbody>
-				{
-					// values is an array of arrays representing the results of the query
-					values.map((row, i) => (
-						<tr key={i}>
-							{row.map((value, i) => (
-								<td key={i}>{value}</td>
-							))}
-						</tr>
-					))
-				}
-			</tbody>
-		</table>
-	);
-};
+// const ResultsTable: React.FunctionComponent<ResultsTableProps> = ({
+// 	columns,
+// 	values,
+// }) => {
+// 	return (
+// 		<table>
+// 			<thead>
+// 				<tr>
+// 					{columns.map((columnName, i) => (
+// 						<td key={i}>{columnName}</td>
+// 					))}
+// 				</tr>
+// 			</thead>
+
+// 			<tbody>
+// 				{
+// 					// values is an array of arrays representing the results of the query
+// 					values.map((row, i) => (
+// 						<tr key={i}>
+// 							{row.map((value, i) => (
+// 								<td key={i}>{value}</td>
+// 							))}
+// 						</tr>
+// 					))
+// 				}
+// 			</tbody>
+// 		</table>
+// 	);
+// };

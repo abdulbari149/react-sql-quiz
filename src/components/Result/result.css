@@ -1,5 +1,6 @@
-.sql-box {
-  border: 1px solid #aaa;
-  width: 100%;
-
+.table-row:nth-child(2n) {
+  background-color: #4682B4 !important;
+}
+.table-head {
+  background-color: #4682B4 !important;
 }

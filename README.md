@@ -1,13 +1,10 @@
-# demonstration of [react](https://reactjs.org/) + [sql.js](https://github.com/sql-js/sql.js)
+This is SQL Quiz Game
 
-This is a template repository demonstrating the use of sql.js with create-react-app.
+To run the project:
+You should install node version 16.15.0 first
 
-The only differences with a traditional create-react-app application are :
- - The usage of [craco](https://github.com/gsoft-inc/craco) to allow providing a custom [webpack](https://webpack.js.org/) configuration
- - a small custom webpack configuration in [`craco.config.js`](./craco.config.js) to copy the wasm module from sql.js to the distributed assets
+Then run the following commands:
 
- Note that you should make sure your server serves `.wasm` files with the right mimetype, that is: `application/wasm`. Otherwise, you'll see the following error: `TypeError: Response has unsupported MIME type`
- 
- See [`src/App.js`](./src/App.js) for the code.
- 
- ### [view the live demo](https://react-sqljs-demo.ophir.dev/)
+1- ``` npm install ```
+
+2- ``` npm start ```

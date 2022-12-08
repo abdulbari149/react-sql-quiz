@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { FilterAndValuesPanel } from "./FilterAndValuesPanel";
 import { KeywordsPanel } from "./KeywordsPanel";
 import { TablePanel } from "./TablePanel";
 
 interface Props {}
 
 export const QueryOptions: React.FunctionComponent<Props> = () => {
-	const [tabIndex, setTabIndex] = useState(0);
 
 	const styles: React.CSSProperties = {
 		color: "white",
@@ -36,12 +35,18 @@ export const QueryOptions: React.FunctionComponent<Props> = () => {
 				<Tab tabIndex="keywords" style={styles}>
 					Keywords
 				</Tab>
+				<Tab tabIndex="filter-&-values" style={styles}>
+					Filter & Values
+				</Tab>
 			</TabList>
 			<TabPanel style={tabPanelStyle}>
 				<TablePanel />
 			</TabPanel>
 			<TabPanel style={tabPanelStyle}>
 				<KeywordsPanel />
+			</TabPanel>
+			<TabPanel style={tabPanelStyle}>
+				<FilterAndValuesPanel />
 			</TabPanel>
 		</Tabs>
 	);
